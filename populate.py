@@ -5,11 +5,20 @@ import sys
 import os
 from configparser import ConfigParser
 
-config = ConfigParser(interpolation=None)
+config = ''
+dir =''
+
+if len(sys.argv)==3:
+    config = ConfigParser(interpolation=None)
+    dir = os.path.realpath(sys.argv[2])
+elif len(sys.argv)==4:
+    default = ConfigParser(interpolation=None)
+    default.read(sys.argv[2])
+    config = ConfigParser(defaults=default['DEFAULT'], interpolation=None)
+    dir = os.path.realpath(sys.argv[3])
+    
 config.read(os.path.realpath(sys.argv[1]))
 config = config['DEFAULT']
-
-dir = os.path.realpath(sys.argv[2])
 
 timeout=config['db_timeout']
 if timeout=="None":
