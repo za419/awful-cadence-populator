@@ -29,7 +29,8 @@ for r, d, files in os.walk(dir):
     for file in files:
         lfile = file.lower()
         if lfile.endswith((".mp3", ".m4a", ".flac", ".ogg")):
+            file=str(file)
             part = file.rpartition(".")[0]
-            cursor.execute("INSERT INTO "+config['db_table']+" ("+', '.join([config['db_column_title'], config['db_column_artist'], config['db_column_path']])+") VALUES %s, %s, %s", part, part, file)
+            cursor.execute("INSERT INTO "+config['db_table']+" ("+', '.join([config['db_column_title'], config['db_column_artist'], config['db_column_path']])+") VALUES ((%s), (%s), (%s))", (part, part, file))
             db.commit()
-            print("Populated with file {0}.", file)
+            print("Populated with file {0}.".format(file))
